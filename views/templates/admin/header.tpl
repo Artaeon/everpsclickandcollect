@@ -21,7 +21,7 @@
 			<h3><i class="icon icon-smile"></i> {l s='Ever PS Click & Collect' mod='everpsclickandcollect'}</h3>
 			<img id="everlogo" src="{$everpsclickandcollect_dir|escape:'htmlall':'UTF-8'}logo.png" style="max-width: 120px;">
 			<p>
-				<strong>{l s='Welcome to Ever PS Click & Collect !' mod='everpsclickandcollect'}</strong><br />
+				<strong>{l s='Welcome to Ever PS Click & Collect ! (modified by: @RaphaelLugmayr)' mod='everpsclickandcollect'}</strong><br />
 				{l s='Thanks for using Team Ever\'s module' mod='everpsclickandcollect'}</a><br />
 			</p>
             {if isset($stock_file) && $stock_file}

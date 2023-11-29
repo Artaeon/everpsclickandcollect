@@ -20,47 +20,49 @@
 	<div id="everclickncollect_msg" class="text-center">
 		{$custom_msg nofilter}
 	</div>
+	
 	{/if}
 	<table id="store_depot_list" class="table table-striped table-bordered table-labeled table-responsive">
-		<th class="text-center">{l s='Store' mod='everpsclickandcollect'}</th>
-		{if isset($show_store_img) && $show_store_img}
-		<th class="text-center">{l s='Address' mod='everpsclickandcollect'}</th>
-		{/if}
-		{if isset($ask_date) && $ask_date}
-		<th class="text-center">{l s='Choose date' mod='everpsclickandcollect'}</th>
-		{/if}
-		<th class="text-center">{l s='Select' mod='everpsclickandcollect'}</th>
-		{foreach from=$stores item=store}
-		<tr class="carrier_depot_item">
-			{if isset($show_store_img) && $show_store_img}
-			<td class="text-center">
-				<img src="{$store.image.bySize.stores_default.url|escape:'htmlall':'UTF-8'}" alt="{$store.image.legend|escape:'htmlall':'UTF-8'}" title="{$store.image.legend nofilter}"><br>
-			</td>
-			{/if}
-			<td class="text-center">
-				{$store.name|escape:'htmlall':'UTF-8'}<br>
-				{$store.address.formatted nofilter}
-			</td>
-			{if isset($ask_date) && $ask_date}
-			<td class="text-center">
-				<select class="store_date store_date_{$store.id|escape:'htmlall':'UTF-8'}" data-idstore="{$store.id|escape:'htmlall':'UTF-8'}">
-				{foreach $store.business_hours as $day}
-				{if $day.hours && !empty($day.hours)}
-					<option value="{$day.day|escape:'htmlall':'UTF-8'}" {if $everclickncollect_date == $day.day}selected{/if}>
-						{$day.day|escape:'htmlall':'UTF-8'}
-						({foreach $day.hours as $h}
-						{$h|escape:'htmlall':'UTF-8'}
-						{/foreach})
-					</option>
-				{/if}
-				{/foreach}
-				</select>
-			</td>
-			{/if}
-			<td class="text-center">
-				<input type="radio" name="everpsclickandcollect" id="{$store.id|escape:'htmlall':'UTF-8'}" value="{$store.id|escape:'htmlall':'UTF-8'}" {if isset($store.selected) && $store.selected}checked{/if} {if isset($only_one) && $only_one}disabled{/if}>
-			</td>
-		</tr>
-		{/foreach}
-	</table>
+
+{block name="date_time_picker"}
+    {* Include this block where you want the date-time picker to appear *}
+    {if isset($ask_date) && $ask_date}
+        <div id="datepicker_container" class="text-center">
+            <p>Wann möchten Sie ihren Burger genießen?</p>
+            <input type="datetime-local" id="pickupDateTime" name="pickupDateTime" class="form-control">
+            {* JavaScript and CSS code omitted for brevity *}
+        </div>
+    {/if}
+{/block}
+
+{* Table header *}
+<table id="store_depot_list" class="table table-striped table-bordered table-labeled" style="width: 100%;">
+    <thead>
+        <tr>
+            <th class="text-center">{l s='Geschäft' mod='everpsclickandcollect'}</th>
+            <th class="text-center">{l s='Adresse' mod='everpsclickandcollect'}</th>
+            <th class="text-center">{l s='Öffnungszeiten' mod='everpsclickandcollect'}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach from=$stores item=store}
+            <tr class="carrier_depot_item">
+                <td class="text-center">{$store.name|escape:'htmlall':'UTF-8'}</td>
+                <td class="text-center">{$store.address.formatted nofilter}</td>
+                <td class="text-center">
+                    {* Opening hours inserting *}
+                    {foreach $store.business_hours as $day}
+                        {if $day.hours && !empty($day.hours)}
+                            {$day.day|escape:'htmlall':'UTF-8'}:
+                            {foreach $day.hours as $hours}
+                                {$hours|escape:'htmlall':'UTF-8'}
+                            {/foreach}
+                            <br>
+                        {/if}
+                    {/foreach}
+                </td>
+            </tr>
+        {/foreach}
+    </tbody>
+</table>
 </div>
